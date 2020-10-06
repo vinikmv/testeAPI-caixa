@@ -1,5 +1,6 @@
 instrucoes.md
 node_modules
 dist
+coverage
 
 GlobalConfig.json
