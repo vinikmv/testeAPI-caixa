@@ -1,6 +1,8 @@
 import { SignUpController } from './signup-controller'
 import { InvalidParamError, ServerError, MissingParamError } from '@/presentation/errors'
 import { EmailValidator } from '@/presentation/protocols'
+import { AccountModel } from '@/domain/models/account'
+import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-account'
 import faker from 'faker'
 
 const makeEmailValidator = (): EmailValidator => {
@@ -12,17 +14,34 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub()
 }
 
+const makeAddAccount = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    add (account: AddAccountParams): AccountModel {
+      const mockAccount = {
+        id: faker.random.uuid(),
+        email: faker.internet.email(),
+        password: faker.internet.password()
+      }
+      return mockAccount
+    }
+  }
+  return new AddAccountStub()
+}
+
 interface SutTypes {
   sut: SignUpController
   emailValidatorStub: EmailValidator
+  addAccountStub: AddAccount
 }
 
 const makeSut = (): SutTypes => {
+  const addAccountStub = makeAddAccount()
   const emailValidatorStub = makeEmailValidator()
-  const sut = new SignUpController(emailValidatorStub)
+  const sut = new SignUpController(emailValidatorStub, addAccountStub)
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    addAccountStub
   }
 }
 
@@ -135,5 +154,24 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('Should call AddAccount with correct values', () => {
+    const { sut, addAccountStub } = makeSut()
+    const addSpy = jest.spyOn(addAccountStub, 'add')
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+    const httpRequest = {
+      body: {
+        email,
+        password,
+        passwordConfirmation: password
+      }
+    }
+    sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith({
+      email,
+      password
+    })
   })
 })
