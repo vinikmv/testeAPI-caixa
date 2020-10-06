@@ -2,9 +2,13 @@ import faker from 'faker'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
 import { SignUpController } from './signup-controller'
 
+const makeSut = (): SignUpController => {
+  return new SignUpController()
+}
+
 describe('SignUp Controller', () => {
   test('Should return 400 if no email if provided', () => {
-    const sut = new SignUpController()
+    const sut = makeSut()
     const password = faker.internet.password()
     const httpRequest = {
       body: {
@@ -18,7 +22,7 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 400 if no password if provided', () => {
-    const sut = new SignUpController()
+    const sut = makeSut()
     const httpRequest = {
       body: {
         email: faker.internet.email()
@@ -30,7 +34,7 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 400 if no passwordConfirmation if provided', () => {
-    const sut = new SignUpController()
+    const sut = makeSut()
     const password = faker.internet.password()
     const httpRequest = {
       body: {
