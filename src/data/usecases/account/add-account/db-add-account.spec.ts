@@ -1,4 +1,4 @@
-import { Hasher } from '@/data/protocols/cryptography/hasher'
+import { Hasher } from './db-add-account-protocols'
 import { DbAddAccount } from '@/data/usecases/account/add-account/db-add-account'
 
 const makeHasher = (): Hasher => {
