@@ -40,4 +40,10 @@ describe('Log Decorator', () => {
     await sut.handle(mockRequest())
     expect(handleSpy).toHaveBeenCalledWith(mockRequest())
   })
+
+  test('Shoul return the same result of controller ', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok({ email: 'any_email@mail.com' }))
+  })
 })
