@@ -1,14 +1,31 @@
-import faker from 'faker'
-import { MissingParamError } from '@/presentation/errors/missing-param-error'
 import { SignUpController } from './signup-controller'
+import { MissingParamError } from '@/presentation/errors/missing-param-error'
+import { InvalidParamError } from '@/presentation/errors'
+import { EmailValidator } from '@/presentation/protocols'
+import faker from 'faker'
 
-const makeSut = (): SignUpController => {
-  return new SignUpController()
+interface SutTypes {
+  sut: SignUpController
+  emailValidatorStub: EmailValidator
+}
+
+const makeSut = (): SutTypes => {
+  class EmailValidatorStub implements EmailValidator {
+    isValid (email: string): boolean {
+      return true
+    }
+  }
+  const emailValidatorStub = new EmailValidatorStub()
+  const sut = new SignUpController(emailValidatorStub)
+  return {
+    sut,
+    emailValidatorStub
+  }
 }
 
 describe('SignUp Controller', () => {
   test('Should return 400 if no email if provided', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
     const password = faker.internet.password()
     const httpRequest = {
       body: {
@@ -22,7 +39,7 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 400 if no password if provided', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
     const httpRequest = {
       body: {
         email: faker.internet.email()
@@ -34,7 +51,7 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 400 if no passwordConfirmation if provided', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
     const password = faker.internet.password()
     const httpRequest = {
       body: {
@@ -47,5 +64,21 @@ describe('SignUp Controller', () => {
     expect(httpResponse.body).toEqual(
       new MissingParamError('passwordConfirmation')
     )
+  })
+
+  test('Should return 400 if an invalid email if provided', () => {
+    const { sut, emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
+    const password = faker.internet.password()
+    const httpRequest = {
+      body: {
+        email: faker.random.word(),
+        password,
+        passwordConfirmation: password
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('email'))
   })
 })
