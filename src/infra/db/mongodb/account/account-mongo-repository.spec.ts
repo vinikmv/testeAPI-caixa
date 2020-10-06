@@ -1,6 +1,8 @@
 import { AccountMongoRepository } from '@/infra/db/mongodb/account/account-mongo-repository'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
+const makeSut = (): AccountMongoRepository => new AccountMongoRepository()
+
 describe('AccountMongoRepository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -11,7 +13,7 @@ describe('AccountMongoRepository', () => {
   })
 
   test('Should return an account on success', async () => {
-    const sut = new AccountMongoRepository()
+    const sut = makeSut()
     const account = await sut.add({
       email: 'any_email@mail.com',
       password: 'any_password'
