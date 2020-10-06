@@ -1,6 +1,6 @@
 {
-  "name": "teste-tecnospeed",
-  "version": "1.0.0",
+  "name": "teste-caixa",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,8 +13,8 @@
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Vinicius",
+  "license": "",
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.3",
     "@types/bcrypt": "^3.0.0",
