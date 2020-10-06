@@ -46,7 +46,7 @@ describe('DbAddAccount Usecase', () => {
     const { sut, hasherStub } = makeSut()
     const hashSpy = jest.spyOn(hasherStub, 'hash')
     const accoundData = {
-      email: 'valid_email@mail.com',
+      email: 'valid_email',
       password: 'valid_password'
     }
     await sut.add(accoundData)
@@ -57,7 +57,7 @@ describe('DbAddAccount Usecase', () => {
     const { sut, hasherStub } = makeSut()
     jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const accoundData = {
-      email: 'valid_email@mail.com',
+      email: 'valid_email',
       password: 'valid_password'
     }
     const promise = sut.add(accoundData)
@@ -68,12 +68,12 @@ describe('DbAddAccount Usecase', () => {
     const { sut, addAccountRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addAccountRepositoryStub, 'add')
     const accoundData = {
-      email: 'valid_email@mail.com',
+      email: 'valid_email',
       password: 'valid_password'
     }
     await sut.add(accoundData)
     expect(addSpy).toHaveBeenCalledWith({
-      email: 'valid_email@mail.com',
+      email: 'valid_email',
       password: 'hashed_password'
     })
   })
@@ -82,10 +82,24 @@ describe('DbAddAccount Usecase', () => {
     const { sut, addAccountRepositoryStub } = makeSut()
     jest.spyOn(addAccountRepositoryStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const accoundData = {
-      email: 'valid_email@mail.com',
+      email: 'valid_email',
       password: 'valid_password'
     }
     const promise = sut.add(accoundData)
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return an account on success', async () => {
+    const { sut } = makeSut()
+    const accoundData = {
+      email: 'valid_email',
+      password: 'valid_password'
+    }
+    const account = await sut.add(accoundData)
+    expect(account).toEqual({
+      id: 'valid_id',
+      email: 'valid_email',
+      password: 'hashed_password'
+    })
   })
 })
