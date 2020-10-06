@@ -4,7 +4,7 @@ import { MissingParamError } from '@/presentation/errors/'
 
 export class SignUpController {
   handle (httpRequest: HttpRequest): HttpResponse {
-    const requiredFields = ['email', 'password']
+    const requiredFields = ['email', 'password', 'passwordConfirmation']
     for (const field of requiredFields) {
       if (!httpRequest.body[field]) {
         return badRequest(new MissingParamError(field))
