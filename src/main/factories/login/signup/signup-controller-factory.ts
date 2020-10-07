@@ -3,7 +3,7 @@ import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter'
 import { AccountMongoRepository } from '@/infra/db/mongodb/account/account-mongo-repository'
 import { LogMongoRepository } from '@/infra/db/mongodb/log/log-mongo-repository'
 import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
-import { makeSignUpValidation } from '@/main/factories/signup-validation-factory'
+import { makeSignUpValidation } from '@/main/factories/login/signup/signup-validation-factory'
 import { SignUpController } from '@/presentation/controllers/login/signup/signup-controller'
 import { Controller } from '@/presentation/protocols'
 
