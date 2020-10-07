@@ -1,6 +1,6 @@
 import { HttpRequest, Validation, AddCashFlow, AddCashFlowParams } from './add-cash-flow-protocols'
 import { AddCashFlowController } from './add-cash-flow-controller'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -71,5 +71,14 @@ describe('CashFlow Controller', () => {
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 500 if AddCashFlow throws', async () => {
+    const { sut, addCashFlowStub } = makeSut()
+    jest.spyOn(addCashFlowStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
