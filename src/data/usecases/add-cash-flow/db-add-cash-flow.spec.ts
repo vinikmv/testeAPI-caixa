@@ -1,6 +1,5 @@
 import { AddCashFlowRepository, AddCashFlowParams } from './db-add-cash-flow-protocols'
 import { DbAddCashFlow } from '@/data/usecases/add-cash-flow/db-add-cash-flow'
-import faker from 'faker'
 
 const makeAddCashFlowRepositoryStub = (): AddCashFlowRepository => {
   class AddCashFlowRepositoryStub implements AddCashFlowRepository {
@@ -11,12 +10,13 @@ const makeAddCashFlowRepositoryStub = (): AddCashFlowRepository => {
   return new AddCashFlowRepositoryStub()
 }
 
+const valor: number = 10
 const makeFakeCashData = (): AddCashFlowParams => ({
   categoria: {
     name: 'any_name'
   },
   tipo: 'any_tipo',
-  valor: faker.random.number(),
+  valor,
   descricao: 'any_descricao'
 })
 
