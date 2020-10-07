@@ -1,4 +1,4 @@
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols'
 import { Controller, HttpRequest, HttpResponse, AddCashFlow } from './add-cash-flow-protocols'
 
@@ -9,17 +9,21 @@ export class AddCashFlowController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const error = this.validation.validate(httpRequest.body)
-    if (error) {
-      return badRequest(new Error())
+    try {
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        return badRequest(new Error())
+      }
+      const { categoria, tipo, valor, descricao } = httpRequest.body
+      await this.addCashFlow.add({
+        categoria,
+        tipo,
+        valor,
+        descricao
+      })
+      return null
+    } catch (err) {
+      return serverError(new Error())
     }
-    const { categoria, tipo, valor, descricao } = httpRequest.body
-    await this.addCashFlow.add({
-      categoria,
-      tipo,
-      valor,
-      descricao
-    })
-    return null
   }
 }
