@@ -20,7 +20,7 @@ describe('CashFlow Routes', () => {
   })
 
   describe('POST /cashflows', () => {
-    test('Should return 204 on success ', async () => {
+    test('Should return 403 on success ', async () => {
       await request(app)
         .post('/api/cashflows')
         .send({
@@ -31,7 +31,7 @@ describe('CashFlow Routes', () => {
           valor: 10,
           descricao: 'Deposito'
         })
-        .expect(204)
+        .expect(403)
     })
   })
 })
