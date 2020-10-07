@@ -6,6 +6,7 @@ import faker from 'faker'
 const makeFakeRequest = (): HttpRequest => (
   {
     body: {
+      data: new Date(),
       categoria: {
         name: 'any_name'
       },

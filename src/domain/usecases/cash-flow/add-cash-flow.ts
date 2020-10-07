@@ -1,11 +1,13 @@
 
 export interface AddCashFlowParams {
+  data: Date
   categoria: {
     name: string
   }
   tipo: string
   valor: number
   descricao: string
+
 }
 
 export interface AddCashFlow {

@@ -16,6 +16,7 @@ export class AddCashFlowController implements Controller {
       }
       const { categoria, tipo, valor, descricao } = httpRequest.body
       await this.addCashFlow.add({
+        data: new Date(),
         categoria,
         tipo,
         valor,
