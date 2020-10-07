@@ -1,7 +1,6 @@
-import { badRequest } from '@/presentation/helpers/http/http-helper'
-import { Validation } from '@/presentation/protocols'
+import { HttpRequest, Validation, AddCashFlow, AddCashFlowParams } from './add-cash-flow-protocols'
 import { AddCashFlowController } from './add-cash-flow-controller'
-import { HttpRequest } from './add-cash-flow-protocols'
+import { badRequest } from '@/presentation/helpers/http/http-helper'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -23,18 +22,30 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
+const makeAddCashFlow = (): AddCashFlow => {
+  class AddCashFlowStub implements AddCashFlow {
+    async add (data: AddCashFlowParams): Promise<void> {
+      return await Promise.resolve()
+    }
+  }
+  return new AddCashFlowStub()
+}
+
 interface SutTypes {
   sut: AddCashFlowController
   validationStub: Validation
+  addCashFlowStub: AddCashFlow
 
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const sut = new AddCashFlowController(validationStub)
+  const addCashFlowStub = makeAddCashFlow()
+  const sut = new AddCashFlowController(validationStub, addCashFlowStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    addCashFlowStub
   }
 }
 
@@ -52,5 +63,13 @@ describe('CashFlow Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call AddCashFlow with correct values ', async () => {
+    const { sut, addCashFlowStub } = makeSut()
+    const addSpy = jest.spyOn(addCashFlowStub, 'add')
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
