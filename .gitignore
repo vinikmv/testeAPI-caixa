@@ -2,5 +2,6 @@ instrucoes.md
 node_modules
 dist
 coverage
-
+data
+!src/data
 GlobalConfig.json
