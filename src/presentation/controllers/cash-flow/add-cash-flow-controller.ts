@@ -1,4 +1,4 @@
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols'
 import { Controller, HttpRequest, HttpResponse, AddCashFlow } from './add-cash-flow-protocols'
 
@@ -21,7 +21,7 @@ export class AddCashFlowController implements Controller {
         valor,
         descricao
       })
-      return null
+      return noContent()
     } catch (err) {
       return serverError(new Error())
     }
