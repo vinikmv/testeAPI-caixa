@@ -3,7 +3,7 @@ import { HttpRequest, Authentication, Validation } from './login-protocols'
 import { MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { LoginController } from './login-controller'
-import { AuthenticationModel } from '@/domain/usecases/account/authentication'
+import { AuthenticationParams } from '@/domain/usecases/account/authentication'
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
@@ -16,7 +16,7 @@ const makeValidation = (): Validation => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationModel): Promise<string> {
+    async auth (authentication: AuthenticationParams): Promise<string> {
       return await Promise.resolve('any_token')
     }
   } return new AuthenticationStub()
