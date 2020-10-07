@@ -1,10 +1,11 @@
 import { badRequest } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols'
-import { Controller, HttpRequest, HttpResponse } from './add-cash-flow-protocols'
+import { Controller, HttpRequest, HttpResponse, AddCashFlow } from './add-cash-flow-protocols'
 
 export class AddCashFlowController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly addCashFlow: AddCashFlow
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -12,6 +13,13 @@ export class AddCashFlowController implements Controller {
     if (error) {
       return badRequest(new Error())
     }
+    const { categoria, tipo, valor, descricao } = httpRequest.body
+    await this.addCashFlow.add({
+      categoria,
+      tipo,
+      valor,
+      descricao
+    })
     return null
   }
 }
