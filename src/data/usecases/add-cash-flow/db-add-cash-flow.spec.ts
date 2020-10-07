@@ -42,4 +42,11 @@ describe('DbAddCashFlow Usecase', () => {
     await sut.add(cashFlowData)
     expect(addSpy).toHaveBeenCalledWith(cashFlowData)
   })
+
+  test('Should throw if AddCashFlowRepository throws ', async () => {
+    const { sut, addCashFlowRepositoryStub } = makeSut()
+    jest.spyOn(addCashFlowRepositoryStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.add(makeFakeCashData())
+    await expect(promise).rejects.toThrow()
+  })
 })
