@@ -1,10 +1,13 @@
-import { HashComparer } from '@/data/protocols/cryptography/hash-comparer'
-import { TokenGenerator } from '@/data/protocols/cryptography/token-generator'
-import { LoadAccountByEmailRepository } from '@/data/protocols/db/add-account/load-account-by-email-repository'
-import { UpdateAccessTokenRepository } from '@/data/protocols/db/add-account/update-access-token-repository'
-import { DbAuthentication } from '@/data/usecases/authentication/db-authentication'
+import { DbAuthentication } from './db-authentication'
+import {
+  LoadAccountByEmailRepository,
+  HashComparer,
+  UpdateAccessTokenRepository,
+  TokenGenerator,
+  AuthenticationParams
+} from './db-authentication-protocols'
+
 import { AccountModel } from '@/domain/models/account'
-import { AuthenticationModel } from '@/domain/usecases/account/authentication'
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'any_id',
@@ -12,7 +15,7 @@ const makeFakeAccount = (): AccountModel => ({
   password: 'hashed_password'
 })
 
-const makeFakeAuthentication = (): AuthenticationModel => ({
+const makeFakeAuthentication = (): AuthenticationParams => ({
   email: 'any_email@mail.com',
   password: 'any_password'
 })
