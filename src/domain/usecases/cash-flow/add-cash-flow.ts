@@ -9,5 +9,5 @@ export interface AddCashFlowParams {
 }
 
 export interface AddCashFlow {
-  add: (account: AddCashFlowParams) => Promise<void>
+  add: (cashData: AddCashFlowParams) => Promise<void>
 }

@@ -1,17 +1,19 @@
 import { HttpRequest, Validation, AddCashFlow, AddCashFlowParams } from './add-cash-flow-protocols'
 import { AddCashFlowController } from './add-cash-flow-controller'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http/http-helper'
+import faker from 'faker'
 
-const makeFakeRequest = (): HttpRequest => ({
-  body: {
-    categoria: {
-      name: 'any_name'
-    },
-    tipo: 'any_tipo',
-    valor: 'any_valor',
-    descricao: 'any_descricao'
-  }
-})
+const makeFakeRequest = (): HttpRequest => (
+  {
+    body: {
+      categoria: {
+        name: 'any_name'
+      },
+      tipo: 'any_tipo',
+      valor: faker.random.number(),
+      descricao: 'any_descricao'
+    }
+  })
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
