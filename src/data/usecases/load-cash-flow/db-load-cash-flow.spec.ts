@@ -1,6 +1,7 @@
 import { LoadCashFlowRepository } from '@/data/protocols/db/cash-flow/load-cash-flow-repository'
 import { DbLoadCashFlow } from '@/data/usecases/load-cash-flow/db-load-cash-flow'
 import { CashFlowModel } from '@/domain/models/cash-flow'
+import MockDate from 'mockdate'
 
 const makeFakeCashFlow = (): CashFlowModel[] => {
   return ([{
@@ -53,10 +54,24 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbLoadCashFlow Usecase', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
+
   test('Should call LoadCashFlowRepository', async () => {
     const { sut, loadCashFlowRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadCashFlowRepositoryStub, 'loadAll')
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
+  })
+
+  test('Should return a list of CashFlow on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.load()
+    expect(httpResponse).toEqual(makeFakeCashFlow())
   })
 })
