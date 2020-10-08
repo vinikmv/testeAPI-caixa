@@ -2,6 +2,7 @@ import { CashFlowResultModel } from '@/domain/models/cash-flow'
 import { LoadCashFlowController } from './load-cash-flow-controller'
 import { LoadCashFlow } from './load-cash-flow-protocols'
 import MockDate from 'mockdate'
+import { ok } from '@/presentation/helpers/http/http-helper'
 
 const makeFakeCashFlow = (): CashFlowResultModel => {
   return ({
@@ -69,5 +70,11 @@ describe('LoadCashFlow Controller', () => {
     const loadSpy = jest.spyOn(loadCashFlowStub, 'load')
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(ok(makeFakeCashFlow()))
   })
 })
