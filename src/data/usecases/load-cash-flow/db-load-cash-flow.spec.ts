@@ -74,4 +74,11 @@ describe('DbLoadCashFlow Usecase', () => {
     const httpResponse = await sut.load()
     expect(httpResponse).toEqual(makeFakeCashFlow())
   })
+
+  test('Should throw if LoadCashFlowRepository throws ', async () => {
+    const { sut, loadCashFlowRepositoryStub } = makeSut()
+    jest.spyOn(loadCashFlowRepositoryStub, 'loadAll').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
+  })
 })
