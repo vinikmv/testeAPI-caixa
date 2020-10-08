@@ -1,4 +1,4 @@
-import { ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { noContent, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, LoadCashFlow } from './load-cash-flow-protocols'
 
 export class LoadCashFlowController implements Controller {
@@ -7,7 +7,7 @@ export class LoadCashFlowController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const cashFlow = await this.loadCashFlow.load()
-      return ok(cashFlow)
+      return cashFlow.length ? ok(cashFlow) : noContent()
     } catch (err) {
       return serverError(err)
     }
