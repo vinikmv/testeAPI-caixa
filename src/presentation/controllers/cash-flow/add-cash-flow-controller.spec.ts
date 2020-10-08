@@ -2,6 +2,7 @@ import { HttpRequest, Validation, AddCashFlow, AddCashFlowParams } from './add-c
 import { AddCashFlowController } from './add-cash-flow-controller'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http/http-helper'
 import faker from 'faker'
+import MockDate from 'mockdate'
 
 const makeFakeRequest = (): HttpRequest => (
   {
@@ -53,6 +54,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('CashFlow Controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
+
   test('Should call Validation with correct values ', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')

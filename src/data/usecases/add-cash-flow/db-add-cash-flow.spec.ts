@@ -1,5 +1,6 @@
 import { AddCashFlowRepository, AddCashFlowParams } from './db-add-cash-flow-protocols'
 import { DbAddCashFlow } from '@/data/usecases/add-cash-flow/db-add-cash-flow'
+import MockDate from 'mockdate'
 
 const makeAddCashFlowRepositoryStub = (): AddCashFlowRepository => {
   class AddCashFlowRepositoryStub implements AddCashFlowRepository {
@@ -36,6 +37,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbAddCashFlow Usecase', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
+
   test('Should call AddCashFlowRepository with correct values ', async () => {
     const { sut, addCashFlowRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addCashFlowRepositoryStub, 'add')

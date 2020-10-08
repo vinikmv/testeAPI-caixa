@@ -2,6 +2,7 @@ import { CashFlowMongoRepository } from './cash-flow-mongo-repository'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
 import { AddCashFlowParams } from '@/domain/usecases/cash-flow/add-cash-flow'
+import MockDate from 'mockdate'
 
 let cashFlowCollection: Collection
 const valor: number = 10
@@ -22,10 +23,12 @@ const makeSut = (): CashFlowMongoRepository => new CashFlowMongoRepository()
 describe('CashFlowMongoRepository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+    MockDate.set(new Date())
   })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
+    MockDate.reset()
   })
 
   beforeEach(async () => {
