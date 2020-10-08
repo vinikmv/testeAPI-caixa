@@ -35,6 +35,5 @@ export class CashFlowMongoRepository implements AddCashFlowRepository, LoadCashF
       ]
     }]).toArray()
     return query
-    // const cashFlows = await cashFlowCollection.find({ accountId }).toArray()
   }
 }
