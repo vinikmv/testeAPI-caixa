@@ -36,10 +36,40 @@ describe('CashFlowMongoRepository', () => {
     await cashFlowCollection.deleteMany({})
   })
 
-  test('Should add a cash flow on success', async () => {
-    const sut = makeSut()
-    await sut.add(makeFakeCashData())
-    const cashFlow = await cashFlowCollection.findOne({ tipo: 'any_tipo' })
-    expect(cashFlow).toBeTruthy()
+  describe('add()', () => {
+    test('Should add a cash flow on success', async () => {
+      const sut = makeSut()
+      await sut.add(makeFakeCashData())
+      const cashFlow = await cashFlowCollection.findOne({ tipo: 'any_tipo' })
+      expect(cashFlow).toBeTruthy()
+    })
+  })
+
+  describe('loadAll()', () => {
+    test('Should load all cash flow on success', async () => {
+      await cashFlowCollection.insertMany([{
+        data: new Date(),
+        categoria: {
+          name: 'any_name'
+        },
+        tipo: 'any_tipo',
+        valor,
+        descricao: 'any_descricao'
+      },
+      {
+        data: new Date(),
+        categoria: {
+          name: 'other_name'
+        },
+        tipo: 'other_tipo',
+        valor,
+        descricao: 'other_descricao'
+      }])
+      const sut = makeSut()
+      const cashFlow = await sut.loadAll()
+      expect(cashFlow.length).toBe(2)
+      expect(cashFlow[0].tipo).toBe('any_tipo')
+      expect(cashFlow[1].tipo).toBe('other_tipo')
+    })
   })
 })
