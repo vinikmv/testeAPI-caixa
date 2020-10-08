@@ -2,7 +2,7 @@ import { ValidationComposite, RequiredFieldValidation } from '@/validation/valid
 import { Validation } from '@/presentation/protocols/validation'
 import { makeAddCashFlowValidation } from './add-cash-flow-validation-factory'
 
-jest.mock('../../../../validation/validators/validation-composite')
+jest.mock('../../../../../validation/validators/validation-composite')
 
 describe('AddCashFlowValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
