@@ -70,4 +70,45 @@ describe('CashFlow Routes', () => {
         .expect(204)
     })
   })
+
+  describe('get /cashflows', () => {
+    test('Should return 403 on load cashflows without accessToken', async () => {
+      await request(app)
+        .get('/api/cashflows')
+        .expect(403)
+    })
+
+    test('Should return 204 on add cashflow with valid accessToken', async () => {
+      const res = await accountCollection.insertOne({
+        email: 'teste.123gmail.com',
+        password: '123'
+      })
+      const id = res.ops[0]._id
+      const accessToken = sign({ id }, env.jwtSecret)
+      await accountCollection.updateOne(
+        {
+          _id: id
+        },
+        {
+          $set: {
+            accessToken
+          }
+        }
+      )
+      await cashFlowsCollection.insertMany([{
+        data: new Date(),
+        categoria: {
+          name: 'any_name'
+        },
+        tipo: 'any_tipo',
+        valor: 2,
+        descricao: 'any_descricao'
+      }
+      ])
+      await request(app)
+        .get('/api/cashflows')
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+  })
 })
