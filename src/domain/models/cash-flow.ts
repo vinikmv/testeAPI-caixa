@@ -1,4 +1,4 @@
-export interface CashFlowResult {
+export interface CashFlowResultModel {
   saldoTotal: number
   movimentacoes: CashFlowModel[]
 }
@@ -11,6 +11,6 @@ export interface CashFlowModel {
     name: string
   }
   tipo: string
-  valor: string
+  valor: number
   descricao: string
 }
