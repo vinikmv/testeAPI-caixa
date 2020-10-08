@@ -10,12 +10,14 @@ export class AddCashFlowController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      const { accountId } = httpRequest
       const error = this.validation.validate(httpRequest.body)
       if (error) {
         return badRequest(new Error())
       }
       const { categoria, tipo, valor, descricao } = httpRequest.body
       await this.addCashFlow.add({
+        accountId,
         data: new Date(),
         categoria,
         tipo,

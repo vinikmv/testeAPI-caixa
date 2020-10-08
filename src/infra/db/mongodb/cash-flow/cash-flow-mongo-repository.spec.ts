@@ -13,7 +13,8 @@ const makeFakeCashData = (): AddCashFlowParams => ({
   },
   tipo: 'any_tipo',
   valor,
-  descricao: 'any_descricao'
+  descricao: 'any_descricao',
+  accountId: 'any_id'
 })
 
 const makeSut = (): CashFlowMongoRepository => new CashFlowMongoRepository()

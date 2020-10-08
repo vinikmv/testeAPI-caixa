@@ -7,7 +7,7 @@ export interface AddCashFlowParams {
   tipo: string
   valor: number
   descricao: string
-
+  accountId?: string
 }
 
 export interface AddCashFlow {
