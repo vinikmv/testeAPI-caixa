@@ -1,41 +1,38 @@
-import { CashFlowResultModel } from '@/domain/models/cash-flow'
+import { CashFlowModel } from '@/domain/models/cash-flow'
 import { LoadCashFlowController } from './load-cash-flow-controller'
 import { LoadCashFlow } from './load-cash-flow-protocols'
 import MockDate from 'mockdate'
-import { ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { ok, serverError, noContent } from '@/presentation/helpers/http/http-helper'
 
-const makeFakeCashFlow = (): CashFlowResultModel => {
-  return ({
-    saldoTotal: 123,
-    movimentacoes: [{
-      data: new Date(),
-      id: 'any_id',
-      categoria: {
-        id: 'other_id',
-        name: 'any_name'
-      },
-      tipo: 'any_tipo',
-      valor: 123,
-      descricao: 'any_descricao'
+const makeFakeCashFlow = (): CashFlowModel[] => {
+  return ([{
+    data: new Date(),
+    id: 'any_id',
+    categoria: {
+      id: 'other_id',
+      name: 'any_name'
     },
-    {
-      data: new Date(),
-      id: 'any_id2',
-      categoria: {
-        id: 'other_id2',
-        name: 'any_name2'
-      },
-      tipo: 'any_tipo2',
-      valor: 1234,
-      descricao: 'any_descricao2'
-    }]
-  }
+    tipo: 'any_tipo',
+    valor: 123,
+    descricao: 'any_descricao'
+  },
+  {
+    data: new Date(),
+    id: 'any_id2',
+    categoria: {
+      id: 'other_id2',
+      name: 'any_name2'
+    },
+    tipo: 'any_tipo2',
+    valor: 1234,
+    descricao: 'any_descricao2'
+  }]
   )
 }
 
 const makeLoadCashFlow = (): LoadCashFlow => {
   class LoadCashFlowStub implements LoadCashFlow {
-    async load (): Promise<CashFlowResultModel> {
+    async load (): Promise<CashFlowModel[]> {
       return await Promise.resolve(makeFakeCashFlow())
     }
   }
@@ -76,6 +73,13 @@ describe('LoadCashFlow Controller', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(ok(makeFakeCashFlow()))
+  })
+
+  test('Should return 204 if there is no cashFlow on database', async () => {
+    const { sut, loadCashFlowStub } = makeSut()
+    jest.spyOn(loadCashFlowStub, 'load').mockReturnValueOnce(new Promise((resolve, reject) => resolve(([]))))
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(noContent())
   })
 
   test('Should return 500 if LoadCashFlow throws ', async () => {
