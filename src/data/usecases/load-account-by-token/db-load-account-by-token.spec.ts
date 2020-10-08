@@ -4,15 +4,15 @@ import { DbLoadAccountByToken } from '@/data/usecases/load-account-by-token/db-l
 import { AccountModel } from '@/domain/models/account'
 
 const makeFakeAccount = (): AccountModel => ({
-  id: 'valid_id',
-  email: 'valid_email@mail.com',
+  id: 'any_id',
+  email: 'any_email@mail.com',
   password: 'hashed_password'
 })
 
 const makeDecrypter = (): Decrypter => {
   class DecrypterStub implements Decrypter {
-    async decrypt (token: string): Promise<string> {
-      return await Promise.resolve('any_token')
+    async decrypt (value: string): Promise<string> {
+      return await Promise.resolve('any_value')
     }
   }
   return new DecrypterStub()
@@ -83,8 +83,8 @@ describe('DbLoadAccountBytoken Usecase', () => {
   test('Should throw if Decrypter throws ', async () => {
     const { sut, decrypterStub } = makeSut()
     jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const promise = sut.load('any_token')
-    await expect(promise).rejects.toThrow()
+    const account = await sut.load('any_token')
+    await expect(account).toBeNull()
   })
 
   test('Should throw if LoadAccountByTokenRepository throws ', async () => {

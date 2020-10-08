@@ -4,7 +4,7 @@ import { makeDbAddCashFlow } from '@/main/factories/usecases/add-cash-flow/db-ad
 import { AddCashFlowController } from '@/presentation/controllers/cash-flow/add-cash-flow-controller'
 import { Controller } from '@/presentation/protocols'
 
-export const makeCashFlowController = (): Controller => {
+export const makeAddCashFlowController = (): Controller => {
   const controller = new AddCashFlowController(makeAddCashFlowValidation(), makeDbAddCashFlow())
   return makeLogControllerDecorator(controller)
 }
