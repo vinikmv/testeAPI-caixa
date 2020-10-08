@@ -71,5 +71,11 @@ describe('CashFlowMongoRepository', () => {
       expect(cashFlow[0].tipo).toBe('any_tipo')
       expect(cashFlow[1].tipo).toBe('other_tipo')
     })
+
+    test('Should load empty cash flow list', async () => {
+      const sut = makeSut()
+      const cashFlow = await sut.loadAll()
+      expect(cashFlow.length).toBe(0)
+    })
   })
 })
