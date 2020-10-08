@@ -96,6 +96,7 @@ describe('CashFlow Routes', () => {
         }
       )
       await cashFlowsCollection.insertMany([{
+        accountId: id,
         data: new Date(),
         categoria: {
           name: 'any_name'

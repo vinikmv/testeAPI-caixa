@@ -7,8 +7,8 @@ export class DbLoadCashFlow implements LoadCashFlow {
     private readonly loadCashFlowRepository: LoadCashFlowRepository
   ) {}
 
-  async load (): Promise<CashFlowModel[]> {
-    const response = await this.loadCashFlowRepository.loadAll()
+  async load (accountId: string): Promise<CashFlowModel[]> {
+    const response = await this.loadCashFlowRepository.loadAll(accountId)
     return response
   }
 }

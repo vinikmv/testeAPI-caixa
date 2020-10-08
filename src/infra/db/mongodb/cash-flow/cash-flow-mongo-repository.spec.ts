@@ -48,6 +48,7 @@ describe('CashFlowMongoRepository', () => {
   describe('loadAll()', () => {
     test('Should load all cash flow on success', async () => {
       await cashFlowCollection.insertMany([{
+        accountId: 'any_accountId',
         data: new Date(),
         categoria: {
           name: 'any_name'
@@ -57,6 +58,7 @@ describe('CashFlowMongoRepository', () => {
         descricao: 'any_descricao'
       },
       {
+        accountId: 'any_accountId',
         data: new Date(),
         categoria: {
           name: 'other_name'
@@ -66,15 +68,13 @@ describe('CashFlowMongoRepository', () => {
         descricao: 'other_descricao'
       }])
       const sut = makeSut()
-      const cashFlow = await sut.loadAll()
-      expect(cashFlow.length).toBe(2)
-      expect(cashFlow[0].tipo).toBe('any_tipo')
-      expect(cashFlow[1].tipo).toBe('other_tipo')
+      const cashFlow = await sut.loadAll('any_accountId')
+      expect(cashFlow.length).toBe(1)
     })
 
     test('Should load empty cash flow list', async () => {
       const sut = makeSut()
-      const cashFlow = await sut.loadAll()
+      const cashFlow = await sut.loadAll('any_accountId')
       expect(cashFlow.length).toBe(0)
     })
   })

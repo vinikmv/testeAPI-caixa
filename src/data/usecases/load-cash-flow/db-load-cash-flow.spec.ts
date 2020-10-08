@@ -31,7 +31,7 @@ const makeFakeCashFlow = (): CashFlowModel[] => {
 
 const makeLoadCashFlowRepository = (): LoadCashFlowRepository => {
   class LoadCashFlowRepositoryStub implements LoadCashFlowRepository {
-    async loadAll (): Promise<CashFlowModel[]> {
+    async loadAll (accountId: string): Promise<CashFlowModel[]> {
       return await Promise.resolve(makeFakeCashFlow())
     }
   }
@@ -65,20 +65,20 @@ describe('DbLoadCashFlow Usecase', () => {
   test('Should call LoadCashFlowRepository', async () => {
     const { sut, loadCashFlowRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadCashFlowRepositoryStub, 'loadAll')
-    await sut.load()
+    await sut.load('any_id')
     expect(loadAllSpy).toHaveBeenCalled()
   })
 
   test('Should return a list of CashFlow on success', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.load()
+    const httpResponse = await sut.load('any_id')
     expect(httpResponse).toEqual(makeFakeCashFlow())
   })
 
   test('Should throw if LoadCashFlowRepository throws ', async () => {
     const { sut, loadCashFlowRepositoryStub } = makeSut()
     jest.spyOn(loadCashFlowRepositoryStub, 'loadAll').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const promise = sut.load()
+    const promise = sut.load('any_id')
     await expect(promise).rejects.toThrow()
   })
 })
