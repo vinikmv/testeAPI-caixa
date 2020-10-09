@@ -5,6 +5,7 @@ export const cashFlowsPath = {
     }],
     tags: ['Fluxo de caixa'],
     summary: 'API para criar uma movimentação',
+    description: 'É necessário passar o tipo da movimentação como "entrada" ou "saída"',
     requestBody: {
       content: {
         'application/json': {

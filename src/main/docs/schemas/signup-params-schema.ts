@@ -5,10 +5,10 @@ export const signUpParamsSchema = {
       type: 'string'
     },
     password: {
-      type: 'password'
+      type: 'string'
     },
     passwordConfirmation: {
-      type: 'password'
+      type: 'string'
     }
   },
   required: ['email', 'password', 'passwordConfirmation']
