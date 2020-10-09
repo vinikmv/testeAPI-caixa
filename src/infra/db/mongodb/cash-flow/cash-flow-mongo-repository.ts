@@ -19,11 +19,20 @@ export class CashFlowMongoRepository implements AddCashFlowRepository, LoadCashF
       $match: {
         accountId: accountId
       }
-    }, {
+    },
+    {
       $group: {
         _id: 0,
         saldoTotal: {
-          $sum: '$valor'
+          $sum: {
+            $cond: {
+              if: {
+                $eq: ['$tipo', 'entrada']
+              },
+              then: '$valor',
+              else: { $multiply: ['$valor', -1] }
+            }
+          }
         },
         movimentacoes: {
           $push: '$$ROOT'

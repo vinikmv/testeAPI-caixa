@@ -5,7 +5,7 @@ export const loginParamsSchema = {
       type: 'string'
     },
     password: {
-      type: 'string'
+      type: 'password'
     }
   },
   required: ['email', 'password']
