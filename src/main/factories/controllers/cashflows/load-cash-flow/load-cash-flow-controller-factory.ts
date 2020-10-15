@@ -1,5 +1,5 @@
 import { makeLogControllerDecorator } from '@/main/factories/decorators/log-controller-decorator-factory'
-import { makeDbLoadCashFlow } from '@/main/factories/usecases/load-cash-flow/db-add-cash-flow-factory'
+import { makeDbLoadCashFlow } from '@/main/factories/usecases/load-cash-flow/db-load-cash-flow-factory'
 import { LoadCashFlowController } from '@/presentation/controllers/cash-flow/load-cash-flow/load-cash-flow-controller'
 import { Controller } from '@/presentation/protocols'
 
