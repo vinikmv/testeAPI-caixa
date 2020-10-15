@@ -9,7 +9,7 @@ interface SutTypes {
 
 export const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
-    isValid (email: string): boolean {
+    isValidEmail (email: string): boolean {
       return true
     }
   }
@@ -28,21 +28,21 @@ const makeSut = (): SutTypes => {
 describe('Email Validation', () => {
   test('should return an error if EmailValidator returns false', () => {
     const { sut, emailValidatorStub } = makeSut()
-    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
+    jest.spyOn(emailValidatorStub, 'isValidEmail').mockReturnValueOnce(false)
     const error = sut.validate({ email: 'any_email@mail.com' })
     expect(error).toEqual(new InvalidParamError('email'))
   })
 
   test('should call EmailValidator with correct email', () => {
     const { sut, emailValidatorStub } = makeSut()
-    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValidEmail')
     sut.validate({ email: 'any_email@mail.com' })
     expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
 
   test('should throw if EmailValidator throws', () => {
     const { sut, emailValidatorStub } = makeSut()
-    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+    jest.spyOn(emailValidatorStub, 'isValidEmail').mockImplementationOnce(() => {
       throw new Error()
     })
     expect(sut.validate).toThrow()
