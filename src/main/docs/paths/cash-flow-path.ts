@@ -19,6 +19,9 @@ export const cashFlowsPath = {
       204: {
         description: 'Sucesso'
       },
+      400: {
+        $ref: '#/components/badRequest'
+      },
       403: {
         $ref: '#/components/forbidden'
       },
