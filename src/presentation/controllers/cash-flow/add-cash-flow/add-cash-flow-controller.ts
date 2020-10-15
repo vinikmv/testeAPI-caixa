@@ -13,7 +13,7 @@ export class AddCashFlowController implements Controller {
       const { accountId } = httpRequest
       const error = this.validation.validate(httpRequest.body)
       if (error) {
-        return badRequest(new Error())
+        return badRequest(error)
       }
       const { categoria, tipo, valor, descricao } = httpRequest.body
       await this.addCashFlow.add({
