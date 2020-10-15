@@ -15,34 +15,42 @@ export class CashFlowMongoRepository implements AddCashFlowRepository, LoadCashF
 
   async loadAll (accountId: string): Promise<CashFlowModel[]> {
     const cashFlowCollection = await MongoHelper.getCollection('cashflows')
-    const query = await cashFlowCollection.aggregate([{
-      $match: {
-        accountId: accountId
-      }
-    },
-    {
-      $group: {
-        _id: 0,
-        saldoTotal: {
-          $sum: {
-            $cond: {
-              if: {
-                $eq: ['$tipo', 'entrada']
-              },
-              then: '$valor',
-              else: { $multiply: ['$valor', -1] }
-            }
-          }
-        },
-        movimentacoes: {
-          $push: '$$ROOT'
+    const query = await cashFlowCollection.aggregate([
+      {
+        $match: {
+          accountId: accountId
         }
-      }
-    }, {
-      $unset: [
-        'movimentacoes.accountId'
-      ]
-    }]).toArray()
+      }, {
+        $set: {
+          valor: {
+            $toDouble: '$valor'
+          }
+        }
+      },
+      {
+        $group: {
+          _id: 0,
+          saldoTotal: {
+            $sum: {
+              $cond: {
+                if: {
+                  $eq: ['$tipo', 'entrada']
+                },
+                then: '$valor',
+                else: { $multiply: ['$valor', -1] }
+              }
+            }
+          },
+          movimentacoes: {
+            $push: '$$ROOT'
+          }
+        }
+      },
+      {
+        $unset: [
+          'movimentacoes.accountId'
+        ]
+      }]).toArray()
     return query
   }
 }

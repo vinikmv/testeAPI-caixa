@@ -5,7 +5,6 @@ import { AddCashFlowParams } from '@/domain/usecases/cash-flow/add-cash-flow'
 import MockDate from 'mockdate'
 
 let cashFlowCollection: Collection
-const valor: number = 10
 
 const makeFakeCashData = (): AddCashFlowParams => ({
   data: new Date(),
@@ -13,9 +12,8 @@ const makeFakeCashData = (): AddCashFlowParams => ({
     name: 'any_name'
   },
   tipo: 'any_tipo',
-  valor,
-  descricao: 'any_descricao',
-  accountId: 'any_id'
+  valor: '1',
+  descricao: 'any_descricao'
 })
 
 const makeSut = (): CashFlowMongoRepository => new CashFlowMongoRepository()
@@ -54,7 +52,7 @@ describe('CashFlowMongoRepository', () => {
           name: 'any_name'
         },
         tipo: 'any_tipo',
-        valor,
+        valor: '1',
         descricao: 'any_descricao'
       },
       {
@@ -64,7 +62,7 @@ describe('CashFlowMongoRepository', () => {
           name: 'other_name'
         },
         tipo: 'other_tipo',
-        valor,
+        valor: '2',
         descricao: 'other_descricao'
       }])
       const sut = makeSut()

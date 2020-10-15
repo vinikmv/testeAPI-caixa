@@ -5,9 +5,10 @@ export interface AddCashFlowParams {
     name: string
   }
   tipo: string
-  valor: number
+  valor: string
   descricao: string
   accountId?: string
+
 }
 
 export interface AddCashFlow {

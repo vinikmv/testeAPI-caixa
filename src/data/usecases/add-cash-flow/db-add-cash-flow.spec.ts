@@ -11,14 +11,13 @@ const makeAddCashFlowRepositoryStub = (): AddCashFlowRepository => {
   return new AddCashFlowRepositoryStub()
 }
 
-const valor: number = 10
 const makeFakeCashData = (): AddCashFlowParams => ({
   data: new Date(),
   categoria: {
     name: 'any_name'
   },
   tipo: 'any_tipo',
-  valor,
+  valor: '1',
   descricao: 'any_descricao'
 })
 
