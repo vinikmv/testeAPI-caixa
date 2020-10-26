@@ -40,7 +40,7 @@ describe('Currency Validation', () => {
     expect(isValidSpy).toHaveBeenCalledWith('100')
   })
 
-  test('should throw if EmailValidator throws', () => {
+  test('should throw if CurrencyValidator throws', () => {
     const { sut, currencyValidatorStub } = makeSut()
     jest.spyOn(currencyValidatorStub, 'isValidCurrency').mockImplementationOnce(() => {
       throw new Error()

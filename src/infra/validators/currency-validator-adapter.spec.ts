@@ -1,5 +1,5 @@
 import validator from 'validator'
-import { CurrencyValidatorAdapter } from '@/infra/validators/currecy-validator-adapter'
+import { CurrencyValidatorAdapter } from '@/infra/validators/currency-validator-adapter'
 
 jest.mock('validator', () => ({
   isCurrency (): boolean {

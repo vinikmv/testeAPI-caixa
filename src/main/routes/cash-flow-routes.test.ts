@@ -41,7 +41,7 @@ describe('CashFlow Routes', () => {
 
     test('Should return 204 on add cashflow with valid accessToken', async () => {
       const res = await accountCollection.insertOne({
-        email: 'teste.123gmail.com',
+        email: 'teste.12345gmail.com',
         password: '123'
       })
       const id = res.ops[0]._id
@@ -63,7 +63,7 @@ describe('CashFlow Routes', () => {
           categoria: {
             name: 'any_name'
           },
-          tipo: 'any_tipo',
+          tipo: 'Entrada',
           valor: '100',
           descricao: 'any_descricao'
         })
@@ -78,7 +78,7 @@ describe('CashFlow Routes', () => {
         .expect(403)
     })
 
-    test('Should return 204 on add cashflow with valid accessToken', async () => {
+    test('Should return 200 on add cashflow with valid accessToken', async () => {
       const res = await accountCollection.insertOne({
         email: 'teste.123gmail.com',
         password: '123'
