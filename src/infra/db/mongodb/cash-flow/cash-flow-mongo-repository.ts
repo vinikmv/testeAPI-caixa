@@ -34,7 +34,7 @@ export class CashFlowMongoRepository implements AddCashFlowRepository, LoadCashF
             $sum: {
               $cond: {
                 if: {
-                  $eq: ['$tipo', 'entrada']
+                  $eq: ['$tipo', 'Entrada']
                 },
                 then: '$valor',
                 else: { $multiply: ['$valor', -1] }

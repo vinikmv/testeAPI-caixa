@@ -1,4 +1,6 @@
 export * from './required-field-validation'
 export * from './compare-fields-validation'
 export * from './email-validation'
+export * from './type-validation'
+export * from './currency-validation'
 export * from './validation-composite'
